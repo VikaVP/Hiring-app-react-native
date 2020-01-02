@@ -16,7 +16,9 @@ const Splash = () => {
         <View style={style.Container}>
             <Image style={style.Logo} source={require('../assets/arkademy.png')} />
             <Text>Hiring Channel</Text>
-            <Bubbles size={10} color="#FFF" />
+            <View style={{ marginTop: 30 }}>
+                <Bubbles size={10} color="#FFF" />
+            </View>
         </View>
     )
 }

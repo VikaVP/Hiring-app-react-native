@@ -10,7 +10,9 @@ import Login from './src/screens/Login';
 import Signup from './src/screens/Signup';
 import Engineers from './src/screens/Engineers';
 import DetailEngineers from './src/screens/DetailEngineers'
-import MyProfile from './src/screens/MyProfile'
+import MyProfile from './src/screens/EngineersProfile'
+import { Provider } from 'react-redux'
+import store from './src/public/redux/store'
 const AppNavigator = createStackNavigator(
   {
     Home: {
@@ -60,6 +62,12 @@ const AppNavigator = createStackNavigator(
 //       headerVisible: 'false'
 //     }
 //   });
-
 AppContainer = createAppContainer(AppNavigator);
-export default AppContainer;
+function Root() {
+  return (
+    <Provider store={store}>
+      <AppContainer />
+    </Provider>
+  )
+}
+export default Root;

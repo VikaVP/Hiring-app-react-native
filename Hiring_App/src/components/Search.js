@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { View, StyleSheet, Image } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-const Search = () => {
+const Search = (props) => {
     return (
         <View style={style.SearchBar}>
-            <TextInput placeholder="Type here for search" ></TextInput>
+            <TextInput onChangeText={props.onChangeText} placeholder="Type here for search" ></TextInput>
             <Icon name="account-search" size={30} color="#194d33" style={style.icon} />
         </View>
     )

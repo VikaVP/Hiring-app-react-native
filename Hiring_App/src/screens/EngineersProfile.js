@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, StyleSheet, Image, Text, ScrollView, Header, TouchableOpacity, Alert } from 'react-native'
 import Menu from '../components/Menu'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
 import { withNavigation } from 'react-navigation'
-import EngineersDetail from '../components/EngineersDetail'
-class DetailEngineers extends React.Component {
+import Profile from '../components/EngineersProfile'
+class EngineersProfile extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             isLoading: false,
-            id: ''
+            id: '',
+            idUser: ''
         }
     }
     componentDidMount() {
@@ -21,7 +22,7 @@ class DetailEngineers extends React.Component {
             decoded = jwtDecode(token)
             console.log(decoded);
             this.setState({
-                id: decoded["dataId"]
+                idUser: decoded["dataId"]
             })
         }).catch((err) => {
             console.log(err)
@@ -52,27 +53,27 @@ class DetailEngineers extends React.Component {
 
     }
     render() {
-        const engineers = this.props.navigation.getParam('engineers', {});
+        const id = this.props.navigation.getParam('id', '-');
         return (
             <View style={style.ListEngineers}>
                 <ScrollView style={{ flex: 1, marginTop: -15 }}>
-                    <EngineersDetail prop={engineers} />
+                    <Profile id={id} />
                 </ScrollView>
                 <View style={style.MenuBar}>
                     <TouchableOpacity onPress={() => {
                         this.props.navigation.navigate('Engineers')
                     }} style={{ flex: 1 }}>
-                        <Menu iconName="home" title="Home" color="green" />
+                        <Menu iconName="home" title="Home" />
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flex: 1 }}>
                         <Menu iconName="account-badge" title="Company List" />
                     </TouchableOpacity >
                     <TouchableOpacity onPress={() => {
                         this.props.navigation.navigate('MyProfile', {
-                            id: this.state.id
+                            id: this.state.idUser
                         })
                     }} style={{ flex: 1 }}>
-                        <Menu iconName="account" title="Account" />
+                        <Menu iconName="account" title="Account" color="green" />
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flex: 1 }} onPress={this.getLogout}>
                         <Menu iconName="logout" title="Sign Out" />
@@ -82,7 +83,7 @@ class DetailEngineers extends React.Component {
         )
     }
 }
-export default withNavigation(DetailEngineers)
+export default EngineersProfile
 const style = StyleSheet.create({
     ListEngineers: {
         flex: 1,

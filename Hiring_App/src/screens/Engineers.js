@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Image, Text, ScrollView, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { View, StyleSheet, Image, Text, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import { Button, Picker } from 'native-base'
-import { useNavigation } from 'react-navigation-hooks'
 // import { withNavigation } from 'react-navigation'
+import jwtDecode from 'jwt-decode'
+import RNSecureStorage from 'rn-secure-storage'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Search from '../components/Search'
 import Menu from '../components/Menu'
@@ -10,158 +11,196 @@ import Sliders from '../components/Sliders'
 import EngineersList from '../components/Engineers'
 import { connect } from 'react-redux'
 import { fetchEngineers, fetchDetailEngineers } from '../public/redux/actions/engineers'
-const Engineers = (props) => {
-    // const [hidden, setHidden] = useState(true);
-    const { navigate } = useNavigation()
-    const { engineers, setEngineers } = useState([])
-    const { engineersName, setEngineersName } = useState('')
-    const { isLoading } = useState(false)
-    const { id, setId } = useState('')
-    const { username, setUsername } = useState('')
 
-    const handleSort = (value) => {
+class Engineers extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            isLoading: false,
+            id: '',
+            username: '',
+            selected: ''
+        }
+        this.getLogout = this.getLogout.bind(this)
+        this.prevPage = this.prevPage.bind(this)
+        this.nextPage = this.nextPage.bind(this)
+        this.handleSort = this.handleSort.bind(this)
+        this.handleOrderBy = this.handleOrderBy.bind(this)
+        this.handleLimit = this.handleLimit.bind(this)
+    }
+    handleSort(value) {
+        console.log(value);
+
+        this.setState = {
+            selected: value
+        }
         this.props.fetch('', 1, 10, value, 'Name')
     }
-    const handleOrderBy = (value) => {
+    handleOrderBy(value) {
+        this.setState = {
+            selected: value
+        }
         this.props.fetch('', 1, 10, 'DESC', value)
     }
-    const handleLimit = (value) => {
+    handleLimit(value) {
+        this.setState = {
+            selected: value
+        }
         this.props.fetch('', 1, value, 'DESC', 'Name')
     }
-    const onSearch = e => {
-        const val = e.target.value
-        console.log(e.target.value);
-        this.props.fetch(val, 1, 10, 'DESC', 'Name')
+    onSearch = (value) => {
+        this.props.fetch(value, 1, 10, 'DESC', 'Name')
     }
-    useEffect(() => {
-        // const token = localStorage.getItem("token")
-        // const decoded = jwtDecode(token)
-        // console.log(decoded);
-        // this.setState({
-        //     id: decoded.dataId
-        // })
-        // this.props.fetchDetail(decoded.dataId).then(() => {
-        //     this.props.engineer.detailEngineers.map((item) => {
-        //         return this.setState({
-        //             username: item.Name
-        //         })
-        //     })
-        // })
+    componentDidMount() {
+        let token
+        let decoded
+        RNSecureStorage.get("token").then((value) => {
+            console.log(value) // Will return direct value
+            token = value
+            decoded = jwtDecode(token)
+            console.log(decoded);
+            this.setState({
+                id: decoded["dataId"]
+            })
+        }).catch((err) => {
+            console.log(err)
+        })
         this.props.fetch('', 1, 10, 'DESC', 'Name')
-    })
+
+    }
     nextPage = () => {
         this.props.fetch('', parseInt(this.props.engineers.page.page) + 1, 10, 'DESC', 'Name')
     }
     prevPage = () => {
         this.props.fetch('', parseInt(this.props.engineers.page.page) - 1, 10, 'DESC', 'Name')
     }
-    getLogout = () => {
+    getLogout() {
 
-        swal({
-            title: "Are you sure?",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    localStorage.removeItem('token')
-                    this.props.history.push('/')
+        RNSecureStorage.remove("token")
+        Alert.alert(
+            'Are you sure?',
+            'Click ok will sign out your account',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'OK', onPress: () =>
+                        // console.log(value)
+                        this.props.navigation.navigate('Main')
+
                 }
-            })
+            ],
+            { cancelable: false }
+        )
 
     }
-    return (
+    render() {
+        return (
 
-        <View style={style.ListEngineers}>
-            <View >
-                <Search name="engineersName"
-                    onChange={onSearch} />
-            </View>
-            <ScrollView>
-                <Sliders style={{ flex: 1, marginTop: 20 }} />
-                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', marginLeft: 16, marginRight: 16, marginTop: -10, marginBottom: 10 }}>
-                    <Picker
-                        label="Sort"
-                        mode="dropdown"
-                        placeholder="Sort"
-                        iosIcon={<Icon name="arrow-down" />}
-                        placeholder="Sort"
-                        textStyle={{ color: "#5cb85c" }}
-                        itemStyle={{
-                            backgroundColor: "#d3d3d3",
-                            marginLeft: 0,
-                            paddingLeft: 10
-                        }}
-                        itemTextStyle={{ color: '#788ad2' }}
-                        style={{ width: undefined }}
-
-                    //   selectedValue={this.state.selected}
-                    //   onValueChange={this.onValueChange.bind(this)}
-                    >
-                        <Picker.Item label="Name [A-Z]" value="key0" onPress={() => handleSort("ASC")} />
-                        <Picker.Item label="Name [Z-A]" value="key1" onPress={() => handleSort("DESC")} />
-                    </Picker>
-                    <Picker
-                        mode="dropdown"
-                        placeholder="Sort By"
-                        iosIcon={<Icon name="arrow-down" />}
-                        placeholder="Sort By"
-                        textStyle={{ color: "#5cb85c" }}
-                        itemStyle={{
-                            backgroundColor: "#d3d3d3",
-                            marginLeft: 0,
-                            paddingLeft: 10
-                        }}
-                        itemTextStyle={{ color: '#788ad2' }}
-                        style={{ width: undefined }}
-                    //   selectedValue={this.state.selected}
-                    //   onValueChange={this.onValueChange.bind(this)}
-                    >
-                        <Picker.Item label="Name" value="key0" onPress={() => handleOrderBy("Name")} />
-                        <Picker.Item label="Skill" value="key1" onPress={() => handleOrderBy("Skill")} />
-                        <Picker.Item label="Date Update" value="key1" onPress={() => handleOrderBy("date_update")} />
-                    </Picker>
-                    <Picker
-                        mode="dropdown"
-                        placeholder="Limit"
-                        iosIcon={<Icon name="arrow-down" />}
-                        placeholder="Limit"
-                        textStyle={{ color: "#5cb85c" }}
-                        itemStyle={{
-                            backgroundColor: "#d3d3d3",
-                            marginLeft: 0,
-                            paddingLeft: 10
-                        }}
-                        itemTextStyle={{ color: '#788ad2' }}
-                        style={{ width: undefined }}
-                    //   selectedValue={this.state.selected}
-                    //   onValueChange={this.onValueChange.bind(this)}
-                    >
-                        <Picker.Item label="5" value="key0" onPress={() => handleLimit("5")} />
-                        <Picker.Item label="10" value="key1" onPress={() => handleLimit("10")} />
-                    </Picker>
+            <View style={style.ListEngineers} >
+                <View >
+                    <Search name="engineersName"
+                        onChangeText={text => { this.onSearch(text) }} />
                 </View>
-                <EngineersList engineers={this.props.engineers.engineers} />
-            </ScrollView>
-            <View style={style.MenuBar}>
-                <TouchableOpacity style={{ flex: 1 }}>
-                    <Menu iconName="home" title="Home" color="green" />
-                </TouchableOpacity>
-                <TouchableOpacity style={{ flex: 1 }}>
-                    <Menu iconName="account-badge" title="Company List" />
-                </TouchableOpacity >
-                <TouchableOpacity onPress={() => {
-                    navigate('MyProfile')
-                }} style={{ flex: 1 }}>
-                    <Menu iconName="account" title="Account" />
-                </TouchableOpacity>
-                <TouchableOpacity style={{ flex: 1 }}>
-                    <Menu iconName="logout" title="Sign Out" onPress={getLogout} />
-                </TouchableOpacity>
+                <ScrollView>
+                    <Sliders style={{ flex: 1, marginTop: 20 }} />
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', marginLeft: 16, marginRight: 16, marginTop: -10, marginBottom: 10 }}>
+                        <Picker
+                            mode="dropdown"
+                            iosIcon={<Icon name="arrow-down" />}
+                            textStyle={{ color: "#5cb85c" }}
+                            itemStyle={{
+                                backgroundColor: "#d3d3d3",
+                                marginLeft: 0,
+                                paddingLeft: 10
+                            }}
+                            itemTextStyle={{ color: '#788ad2' }}
+                            style={{ width: undefined }}
+
+                            selectedValue={this.state.selected}
+                            onValueChange={(value) => { this.handleSort(value) }}
+                        >
+                            <Picker.Item label="Sort" value="DESC" />
+                            <Picker.Item label="Name [Z-A]" value="DESC" />
+                            <Picker.Item label="Name [A-Z]" value="ASC" />
+                        </Picker>
+                        <Picker
+                            mode="dropdown"
+                            iosIcon={<Icon name="arrow-down" />}
+                            textStyle={{ color: "#5cb85c" }}
+                            itemStyle={{
+                                backgroundColor: "#d3d3d3",
+                                marginLeft: 0,
+                                paddingLeft: 10
+                            }}
+                            itemTextStyle={{ color: '#788ad2' }}
+                            style={{ width: undefined }}
+                            selectedValue={this.state.selected}
+                            onValueChange={(value) => { this.handleOrderBy(value) }}
+                        >
+                            <Picker.Item label="Sort By" value="Sort By" />
+                            <Picker.Item label="Name" value="Name" />
+                            <Picker.Item label="Skill" value="Skill" />
+                            <Picker.Item label="Date Update" value="date_update" />
+                        </Picker>
+                        <Picker
+                            mode="dropdown"
+                            placeholder="Limit"
+                            iosIcon={<Icon name="arrow-down" />}
+                            placeholder="Limit"
+                            textStyle={{ color: "#5cb85c" }}
+                            itemStyle={{
+                                backgroundColor: "#d3d3d3",
+                                marginLeft: 0,
+                                paddingLeft: 10
+                            }}
+                            itemTextStyle={{ color: '#788ad2' }}
+                            style={{ width: undefined }}
+                            selectedValue={this.state.selected}
+                            onValueChange={(value) => { this.handleLimit(value) }}
+                        >
+                            <Picker.Item label="Limit" />
+                            <Picker.Item label="5" value="5" />
+                            <Picker.Item label="10" value="10" />
+                        </Picker>
+                    </View>
+                    <EngineersList engineers={this.props.engineers.engineers} />
+                    {/* <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 100, marginBottom: 50 }}>
+                        <Button onPress={this.nextPage} style={{ width: 80, borderRadius: 20, alignSelf: 'center', alignItems: 'center', marginRight: 10 }} >
+                            <Text style={{ alignSelf: 'center', marginLeft: 15, color: "white" }}> Next </Text>
+                        </Button>
+                        <Button onPress={this.prevPage} style={{ width: 80, borderRadius: 20, alignSelf: 'center', alignItems: 'center', marginRight: 10 }} >
+                            <Text style={{ alignSelf: 'center', marginLeft: 15, color: "white" }}> Prev </Text>
+                        </Button>
+                    </View> */}
+                </ScrollView>
+                <View style={style.MenuBar}>
+                    <TouchableOpacity style={{ flex: 1 }} onPress={() => {
+                        this.props.navigation.navigate('Engineers')
+                    }}>
+                        <Menu iconName="home" title="Home" color="green" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1 }}>
+                        <Menu iconName="account-badge" title="Company List" />
+                    </TouchableOpacity >
+                    <TouchableOpacity onPress={() => {
+                        this.props.navigation.navigate('MyProfile', {
+                            id: this.state.id
+                        })
+                    }} style={{ flex: 1 }}>
+                        <Menu iconName="account" title="Account" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1 }} onPress={this.getLogout}>
+                        <Menu iconName="logout" title="Sign Out" />
+                    </TouchableOpacity>
+                </View>
+
             </View>
-        </View>
-    )
+        )
+    }
 }
 const mapStateToProps = state => ({
     engineers: state.engineers,

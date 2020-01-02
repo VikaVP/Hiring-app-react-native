@@ -3,59 +3,57 @@ import { View, StyleSheet, Image, Text } from 'react-native'
 import { TextInput, ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { withNavigation } from 'react-navigation'
 import { CardFive } from 'react-native-card-ui'
-// import { useNavigation } from 'react-navigation-hooks'
+import { Bubbles } from 'react-native-loader'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 class Engineers extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            isLoading: false
+        }
+
     }
     render() {
-        return (
-            <View >
-                <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }} >LIST ENGINEERS</Text>
-                {this.props.map((post, index) =>
-                    <TouchableOpacity key={index} onPress={() => {
-                        this.props.navigation.navigate('DetailEngineers')
-                    }}>
-                        <CardFive
-                            title={post.Name}
-                            subTitle={post.Skill}
-                            profile={require('../assets/aa.jpg')}
-                            image={require('../assets/aa.jpg')}
-                            icon={"star"}
-                            nbStar={6}
-                            iconColor={"#FFC57C"}
+        const { isLoading } = this.state
 
-                        />
-                    </TouchableOpacity>
-                )}
+        setTimeout(
+            function () {
+                this.setState({ isLoading: true });
+            }
+                .bind(this),
+            2000
+        );
+        return (
+            <View style={{ alignItems: 'center' }} >
+                <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }} >LIST ENGINEERS</Text>
+                {!isLoading ? <Bubbles size={10} style={{ marginTop: 300 }} color="#FFF" /> :
+                    this.props.engineers.map((post, index) =>
+                        <TouchableOpacity key={index} onPress={() => {
+                            this.props.navigation.navigate('DetailEngineers', {
+                                engineers: post
+                            })
+                        }}>
+                            <CardFive
+                                title={post.Name}
+                                subTitle={
+                                    `Skill :${post.Skill}   Expected Salary: ${post.expected_salary}`
+                                }
+                                profile={{
+                                    uri: `${post.Photo}`
+                                }}
+                                image={{
+                                    uri: `${post.Photo}`
+                                }}
+                                icon={"star"}
+                                nbStar={6}
+                                iconColor={"#FFC57C"}
+
+                            />
+                        </TouchableOpacity>
+                    )}
             </View>
         )
     }
 }
-const style = StyleSheet.create({
-    image: {
-        height: undefined,
-        width: undefined,
-        flex: 1,
-        resizeMode: 'cover',
-        borderRadius: 8
-    },
-    wrapper: {
-        height: 150,
-        width: 150,
-        borderRadius: 4,
-        backgroundColor: "black"
-    },
-    list: {
-        marginTop: 16,
-        marginRight: 16
-    },
-    news: {
-        fontWeight: 'bold',
-        color: "black",
-        textAlign: 'center',
-        fontSize: 12
-    }
-})
+
 export default withNavigation(Engineers)
