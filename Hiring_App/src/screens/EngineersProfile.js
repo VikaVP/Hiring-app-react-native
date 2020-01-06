@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, StyleSheet, Image, Text, ScrollView, Header, TouchableOpacity, Alert } from 'react-native'
 import Menu from '../components/Menu'
+import jwtDecode from 'jwt-decode'
 import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
 import { withNavigation } from 'react-navigation'
 import Profile from '../components/EngineersProfile'
@@ -44,7 +45,7 @@ class EngineersProfile extends React.Component {
                 {
                     text: 'OK', onPress: () =>
                         // console.log(value)
-                        this.props.navigation.navigate('Main')
+                        this.props.navigation.push('Main')
 
                 }
             ],
@@ -61,15 +62,17 @@ class EngineersProfile extends React.Component {
                 </ScrollView>
                 <View style={style.MenuBar}>
                     <TouchableOpacity onPress={() => {
-                        this.props.navigation.navigate('Engineers')
+                        this.props.navigation.push('Engineers')
                     }} style={{ flex: 1 }}>
                         <Menu iconName="home" title="Home" />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ flex: 1 }}>
+                    <TouchableOpacity style={{ flex: 1 }} onPress={() => {
+                        this.props.navigation.push('CompaniesMenu')
+                    }}>
                         <Menu iconName="account-badge" title="Company List" />
                     </TouchableOpacity >
                     <TouchableOpacity onPress={() => {
-                        this.props.navigation.navigate('MyProfile', {
+                        this.props.navigation.push('MyProfile', {
                             id: this.state.idUser
                         })
                     }} style={{ flex: 1 }}>
@@ -83,7 +86,7 @@ class EngineersProfile extends React.Component {
         )
     }
 }
-export default EngineersProfile
+export default withNavigation(EngineersProfile)
 const style = StyleSheet.create({
     ListEngineers: {
         flex: 1,

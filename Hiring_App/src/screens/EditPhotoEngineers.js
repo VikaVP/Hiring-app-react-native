@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { View, StyleSheet, Image, Text, ScrollView, Header, TouchableOpacity, Alert } from 'react-native'
 import Menu from '../components/Menu'
 import jwtDecode from 'jwt-decode'
-import RNSecureStorage from 'rn-secure-storage'
+import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
 import { withNavigation } from 'react-navigation'
-import EngineersDetail from '../components/EngineersDetail'
-class DetailEngineers extends React.Component {
+import EditPhotoEngineer from '../components/EditPhotoEngineers'
+class EditPhotoEngineers extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -57,7 +57,7 @@ class DetailEngineers extends React.Component {
         return (
             <View style={style.ListEngineers}>
                 <ScrollView style={{ flex: 1, marginTop: -15 }}>
-                    <EngineersDetail prop={engineers} />
+                    <EditPhotoEngineer prop={engineers} />
                 </ScrollView>
                 <View style={style.MenuBar}>
                     <TouchableOpacity onPress={() => {
@@ -74,7 +74,7 @@ class DetailEngineers extends React.Component {
                         this.props.navigation.push('MyProfile', {
                             id: this.state.id
                         })
-                    }} style={{ flex: 1 }} >
+                    }} style={{ flex: 1 }} color="green">
                         <Menu iconName="account" title="Account" color="green" />
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flex: 1 }} onPress={this.getLogout}>
@@ -85,7 +85,7 @@ class DetailEngineers extends React.Component {
         )
     }
 }
-export default withNavigation(DetailEngineers)
+export default withNavigation(EditPhotoEngineers)
 const style = StyleSheet.create({
     ListEngineers: {
         flex: 1,

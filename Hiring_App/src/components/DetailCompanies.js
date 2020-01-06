@@ -2,12 +2,10 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Image, Text, ImageBackground } from 'react-native'
 import { Left, List, ListItem, Body, Card } from 'native-base'
 import { Bubbles } from 'react-native-loader'
-import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Icons from 'react-native-vector-icons/Entypo'
-import Icon1 from 'react-native-vector-icons/Foundation'
 import { withNavigation } from 'react-navigation'
-class EngineersDetail extends Component {
+class DetailCompanies extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -43,8 +41,8 @@ class EngineersDetail extends Component {
                                 shadowOpacity: 1,
                                 shadowRadius: 2, elevation: 30
                             }}>
-                                <Image source={posts.Photo ? {
-                                    uri: posts.Photo
+                                <Image source={posts.Logo ? {
+                                    uri: posts.Logo
                                 } : { uri: `http://raivens.com/wp-content/uploads/2016/08/Dummy-image.jpg` }} style={style.image}>
                                 </Image>
                             </View>
@@ -59,16 +57,7 @@ class EngineersDetail extends Component {
                             <View>
                                 <Text style={{ fontSize: 25, textAlign: 'center', fontWeight: 'bold' }}>{posts.Name}</Text>
                                 <List>
-                                    <ListItem thumbnail>
-                                        <Left>
-                                            <Icon name="account-badge" size={30} color="blue" />
-                                        </Left>
-                                        <Body>
-                                            <Text note numberOfLines={1}>DOB        : {
-                                                posts.DOB ? moment(posts.DOB.split('T')[0], 'YYYY-MM-DD').format('MMMM D YYYY') : ''
-                                            }</Text>
-                                        </Body>
-                                    </ListItem>
+
                                     <ListItem thumbnail>
                                         <Left>
                                             <Icon name="email-open" size={30} color="blue" />
@@ -85,14 +74,7 @@ class EngineersDetail extends Component {
                                             <Text note numberOfLines={2}>Location : {posts.Location}</Text>
                                         </Body>
                                     </ListItem>
-                                    <ListItem thumbnail>
-                                        <Left>
-                                            <Icon name="anchor" size={30} color="blue" />
-                                        </Left>
-                                        <Body>
-                                            <Text note numberOfLines={2}>Showcase : {posts.Showcase}</Text>
-                                        </Body>
-                                    </ListItem>
+
                                     <ListItem thumbnail>
                                         <Left>
                                             <Icon name="briefcase-account" size={30} color="blue" />
@@ -101,22 +83,7 @@ class EngineersDetail extends Component {
                                             <Text note numberOfLines={2}>Description : {posts.Description}</Text>
                                         </Body>
                                     </ListItem>
-                                    <ListItem thumbnail>
-                                        <Left>
-                                            <Icon1 name="dollar-bill" size={30} color="blue" />
-                                        </Left>
-                                        <Body>
-                                            <Text note numberOfLines={1}>Expected Salary : {posts.expected_salary}</Text>
-                                        </Body>
-                                    </ListItem>
-                                    <ListItem thumbnail>
-                                        <Left>
-                                            <Icon1 name="social-skillshare" size={30} color="blue" />
-                                        </Left>
-                                        <Body>
-                                            <Text note numberOfLines={2}>Skill : {posts.Skill}</Text>
-                                        </Body>
-                                    </ListItem>
+
                                 </List>
                             </View>
                         </Card>
@@ -127,7 +94,7 @@ class EngineersDetail extends Component {
     }
 }
 
-export default withNavigation(EngineersDetail)
+export default withNavigation(DetailCompanies)
 const style = StyleSheet.create({
     profile: {
         height: 200,

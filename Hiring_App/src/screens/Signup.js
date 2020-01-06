@@ -1,92 +1,27 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, Field, TextInput, Alert } from 'react-native'
-import { Container, Header, Content, Form, Item, Input, Label, Picker, Icon, Card, View, Button } from 'native-base';
+import React, { Component, Fragment } from 'react';
+import * as Yup from 'yup'
+import { Formik } from 'formik'
+import { StyleSheet, Text, TextInput, Alert } from 'react-native'
+import { Container, Header, Item, Input, Label, Picker, Icon, Card, View, Button } from 'native-base';
 import { connect } from 'react-redux'
 import { fetchSignup } from '../public/redux/actions/signup'
 import { withNavigation } from 'react-navigation'
-const regex = require('regex-email')
+import PasswordInputText from 'react-native-hide-show-password-input'
 class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected: undefined,
-            Name: "",
-            email: "",
-            password: "",
-            nameErr: "",
-            emailEr: "",
-            passwordErr: "",
-            role: "",
-            valid: true,
-            alert: null,
-            roleErr: ""
+            DOB: "1999-12-1"
         };
         this.addUser = this.addUser.bind(this)
-        // this.handleChange = this.handleChange.bind(this)
-        // this.handleFieldChangeFile = this.handleFieldChangeFile.bind(this)
     }
-    validateForm() {
-        const { Name, email, password, role } = this.state
-        if (!email) {
-            this.setState({
-                emailErr: "Email must not be empty"
-            });
-        } else if (!email.match(regex)) {
-            this.setState({
-                emailErr: "Invalid email"
-            })
-        } else {
-            this.setState({
-                emailErr: ""
-            });
-        }
-        if (!password) {
-            this.setState({
-                passwordErr: "Password must not be empty"
-            });
-        } else if (password.length < 3) {
-            this.setState({
-                passwordErr: "Password too short"
-            })
-        } else {
-            this.setState({
-                passwordErr: ""
-            });
-        }
-        if (!Name) {
-            this.setState({
-                nameErr: "Name must not be empty"
-            });
-        } else {
-            this.setState({
-                nameErr: ""
-            });
-        }
-        if (!role) {
-            this.setState({
-                roleErr: "Please choose your role"
-            });
-        } else {
-            this.setState({
-                roleErr: ""
-            });
-        }
-
-    }
-    addUser = () => {
-        // e.preventDefault()
-        // alert('hhh')
-        // this.validateForm()
-        // if (!this.state.emailErr && !this.state.passwordErr && !this.state.nameErr) {
-
-        // alert(this.state.role)
-        if (this.state.role === 'engineer') {
+    addUser = (v) => {
+        if (v['role'] === 'engineer') {
             this.props.fetchSignup('engineers', {
-                Name: this.state.Name, email: this.state.email, password: this.state.password
+                Name: v['Name'], email: v['email'], password: v['password'], DOB: this.state.DOB
             })
             Alert.alert(
                 'Are you sure?',
-                // `${this.state.Name} ${this.state.email} ${this.state.password}`,
                 'Your data will be send',
                 [
                     {
@@ -99,9 +34,9 @@ class SignUp extends Component {
                 { cancelable: false }
             )
         }
-        if (this.state.role === 'company') {
+        if (v['role'] === 'company') {
             this.props.fetchSignup('companies', {
-                Name: this.state.Name, email: this.state.email, password: this.state.password
+                Name: v['Name'], email: v['email'], password: v['password']
             })
             Alert.alert(
                 'Are you sure?',
@@ -121,115 +56,106 @@ class SignUp extends Component {
     // }
     render() {
         return (
-            <>
-                <Header />
-                <Container style={style.Login}>
-                    <View >
-                        <Card style={style.Card}>
-                            <Form>
-                                <Label style={{ fontSize: 30, textAlign: 'center' }}>Sign Up</Label>
-                                <Input style={{ display: 'none' }}
-                                    type='hidden'
-                                    id='Description'
-                                    name='Description'
-                                    className='form-control'
-                                    value=" "
-                                />
-                                <TextInput style={{ display: 'none' }}
-                                    type='hidden'
-                                    id='Skill'
-                                    name='Skill'
-                                    className='form-control'
-                                    value=" "
-                                />
-                                <TextInput style={{ display: 'none' }}
-                                    type='hidden'
-                                    id='Location'
-                                    name='Location'
-                                    className='form-control'
-                                    value=" "
-                                />
-                                <Input style={{ display: 'none' }}
-                                    type='hidden'
-                                    id='Showcase'
-                                    name='Showcase'
-                                    className='form-control'
-                                    value=" "
-                                />
-                                <Input style={{ display: 'none' }}
-                                    type='hidden'
-                                    id='expected_salary'
-                                    name='expected_salary'
-                                    className='form-control'
-                                    value=" "
-                                />
-                                <Item floatingLabel>
-                                    <Label>Username</Label>
-                                    <Input
-                                        name="Name"
-                                        value={this.state.Name}
-                                        onChangeText={(value) => {
-                                            this.setState({
-                                                Name: value
-                                            })
-                                        }} />
-                                    {/* {this.state.nameErr && <Label style={{ color: "red" }}>
-                                        {this.state.nameErr}
-                                    </Label>} */}
-                                </Item>
-                                <Item floatingLabel last>
-                                    <Label>Email</Label>
-                                    <Input
-                                        name="email"
-                                        value={this.state.email}
-                                        onChangeText={(value) => {
-                                            this.setState({
-                                                email: value
-                                            })
-                                        }}
+
+            <Formik
+                initialValues={{ email: '', password: '', role: '', Name: '' }}
+                onSubmit={values => this.addUser(values)}
+                validationSchema={Yup.object().shape({
+                    role: Yup.string()
+                        .label('role')
+                        .required()
+                        .min(2, 'Must have choose one'),
+                    Name: Yup.string()
+                        .label('Name')
+                        .required()
+                        .max(40, 'Max 40 characters'),
+                    email: Yup.string()
+                        .label('email')
+                        .email('Enter a valid email')
+                        .required('Please enter a registered email'),
+                    password: Yup.string()
+                        .label('password')
+                        .required()
+                        .min(3, 'Password must have more than 3 characters '),
+                })}
+            >
+                {({ values, handleChange, errors, setFieldTouched, touched, isValid, setFieldValue, handleSubmit }) => (
+                    <Fragment>
+                        <Header />
+                        <Container style={style.Login}>
+                            <View >
+                                <Card style={style.Card}>
+                                    <Label style={{ fontSize: 30, textAlign: 'center' }}>Sign Up</Label>
+                                    <Input style={{ display: 'none' }}
+                                        type='hidden'
+                                        id='DOB'
+                                        name='DOB'
+                                        className='form-control'
+                                        value="1999-12-1"
                                     />
-                                </Item>
-                                <Item floatingLabel last>
-                                    <Label>Password</Label>
-                                    <Input
-                                        name="password"
-                                        value={this.state.password}
-                                        onChangeText={(value) => {
-                                            this.setState({
-                                                password: value
-                                            })
-                                        }}
+                                    <TextInput
+                                        value={values.Name}
+                                        onChangeText={handleChange('Name')}
+                                        onBlur={() => setFieldTouched('Name')}
+                                        placeholder="Name"
                                     />
-                                </Item>
-                                <Item picker style={{ width: 200, alignSelf: 'center', padding: 10 }}>
-                                    <Picker
-                                        mode="dropdown"
-                                        iosIcon={<Icon name="arrow-down" />}
-                                        style={{ width: undefined }}
-                                        placeholder="Select your role"
-                                        placeholderStyle={{ color: "#bfc6ea" }}
-                                        placeholderIconColor="#007aff"
-                                        selectedValue={this.state.role}
-                                        onValueChange={(value) => {
-                                            this.setState({
-                                                role: value
-                                            })
-                                        }}
-                                    >
-                                        <Picker.Item name="role" label="Role" />
-                                        <Picker.Item name="role" label="Engineer" value="engineer" />
-                                        <Picker.Item name="role" label="Company" value="company" />
-                                    </Picker>
-                                </Item>
-                            </Form>
-                            <Button full onPress={this.addUser}>
-                                <Text style={{ color: "#ffffff" }} >Sign Up</Text>
-                            </Button>
-                        </Card>
-                        <Text style={style.textSignUp}>Have any account? <Text onPress={() => this.props.navigation.push('Main')} style={{ fontWeight: 'bold' }}>Sign In</Text> in here </Text>
-                    </View>
-                </Container>
-            </>
+                                    {touched.Name && errors.Name &&
+                                        <Text style={{ fontSize: 10, color: 'red' }}>{errors.Name}</Text>
+                                    }
+                                    <TextInput
+                                        value={values.email}
+                                        onChangeText={handleChange('email')}
+                                        onBlur={() => setFieldTouched('email')}
+                                        placeholder="E-mail"
+                                    />
+                                    {touched.email && errors.email &&
+                                        <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>
+                                    }
+                                    <PasswordInputText
+                                        value={values.password}
+                                        onChangeText={handleChange('password')}
+                                        placeholder="Password"
+                                        onBlur={() => setFieldTouched('password')}
+                                        secureTextEntry={true}
+                                    />
+                                    {touched.password && errors.password &&
+                                        <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+                                    }
+                                    <Item picker style={{ width: 200, alignSelf: 'center', padding: 10 }}>
+                                        <Picker
+                                            mode="dropdown"
+                                            iosIcon={<Icon name="arrow-down" />}
+                                            style={{ width: undefined }}
+                                            placeholder="Select your role"
+                                            placeholderStyle={{ color: "#bfc6ea" }}
+                                            placeholderIconColor="#007aff"
+                                            selectedValue={values.role}
+                                            onBlur={() => setFieldTouched('role')}
+                                            onValueChange={(itemValue, itemIndex) => {
+                                                setFieldValue('role', itemValue)
+                                                this.setState({ role: itemValue })
+                                            }}
+                                        >
+                                            <Picker.Item name="role" label="role" />
+                                            <Picker.Item name="engineer" label="engineer" value="engineer" />
+                                            <Picker.Item name="company" label="company" value="company" />
+                                        </Picker>
+                                    </Item>
+                                    {touched.role && errors.role &&
+                                        <Text style={{ fontSize: 10, color: 'red' }}>{errors.role}</Text>
+                                    }
+                                    <Button full title='Sign In'
+                                        disabled={!isValid} onPress={handleSubmit} >
+                                        <Text style={{ color: "#ffffff" }} >Sign Up</Text>
+                                    </Button>
+                                </Card>
+                                <Text style={style.textSignUp}>Have any account? <Text onPress={() => this.props.navigation.push('Main')} style={{ fontWeight: 'bold' }}>Sign In</Text> in here </Text>
+                            </View>
+                        </Container>
+                    </Fragment>
+                )}
+            </Formik>
+
         );
     }
 }
@@ -247,7 +173,8 @@ const style = StyleSheet.create({
         justifyContent: "center", flexGrow: 1, backgroundColor: "#00bcd4", alignItems: 'center'
     },
     Card: {
-        width: 300
+        width: 300,
+        padding: 20
     },
     textSignUp: {
         color: 'white',

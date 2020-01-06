@@ -10,9 +10,9 @@ import Icon1 from 'react-native-vector-icons/Foundation'
 import Icon2 from 'react-native-vector-icons/MaterialIcons'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { fetchDetailEngineers, fetchDeleteEngineers } from '../public/redux/actions/engineers'
+import { fetchDetailCompanies, fetchDeleteCompanies } from '../public/redux/actions/companies'
 import { withNavigation } from 'react-navigation'
-class EngineersProfile extends Component {
+class CompanyProfile extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -72,18 +72,13 @@ class EngineersProfile extends Component {
     componentDidMount() {
         this.props.fetch(this.props.id)
             .then(() => {
-                this.props.propsDetail.detailEngineers.map((item) => {
+                this.props.propsDetail.detailCompanies.map((item) => {
                     return this.setState({
                         Name: item.Name,
                         id: item.id,
-                        Skill: item.Skill,
-                        Showcase: item.Showcase,
-                        DOB: item.DOB.split('T')[0],
                         Description: item.Description,
                         email: item.email,
-                        expected_salary: item.expected_salary,
-                        Location: item.Location,
-                        Date_created: item.Date_created.split('T')[0]
+                        Location: item.Location
                     })
                 })
             })
@@ -102,12 +97,12 @@ class EngineersProfile extends Component {
         return (
             <>
                 {!isLoading ? <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 300 }}><Bubbles size={10} style={{ marginTop: 500 }} color="green" /></View> :
-                    this.props.propsDetail.detailEngineers.map((item, index) =>
+                    this.props.propsDetail.detailCompanies.map((item, index) =>
                         <View >
                             <ImageBackground source={require('../assets/bg.jpeg')} style={{ height: 400, justifyContent: 'center', alignItems: 'center' }}>
                                 <TouchableOpacity onPress={() => {
-                                    this.props.navigation.push('EditPhotoEngineers', {
-                                        engineers: this.props.propsDetail.detailEngineers
+                                    this.props.navigation.push('EditPhotoCompanies', {
+                                        companies: this.props.propsDetail.detailCompanies
                                     })
                                 }} >
                                     <View style={{
@@ -130,8 +125,8 @@ class EngineersProfile extends Component {
                                         shadowRadius: 2,
                                         // elevation: 30
                                     }}>
-                                        <Image source={item.Photo ? {
-                                            uri: item.Photo
+                                        <Image source={item.Logo ? {
+                                            uri: item.Logo
                                         } : { uri: `http://raivens.com/wp-content/uploads/2016/08/Dummy-image.jpg` }}
                                             style={style.image}>
                                         </Image>
@@ -147,18 +142,7 @@ class EngineersProfile extends Component {
                                 <View>
                                     <Text style={{ fontSize: 25, textAlign: 'center', fontWeight: 'bold' }}>{item.Name}</Text>
                                     <List>
-                                        <ListItem thumbnail>
-                                            <Left>
-                                                <Icon name="account-badge" size={30} color="blue" />
-                                            </Left>
-                                            <Body>
 
-                                                <Text note numberOfLines={1}>DOB        : {
-                                                    item.DOB ? moment(item.DOB.split('T')[0], 'YYYY-MM-DD').format('MMMM D YYYY') : ''
-
-                                                }</Text>
-                                            </Body>
-                                        </ListItem>
                                         <ListItem thumbnail>
                                             <Left>
                                                 <Icon name="email-open" size={30} color="blue" />
@@ -175,14 +159,7 @@ class EngineersProfile extends Component {
                                                 <Text note numberOfLines={1}>Location : {item.Location}</Text>
                                             </Body>
                                         </ListItem>
-                                        <ListItem thumbnail>
-                                            <Left>
-                                                <Icon name="anchor" size={30} color="blue" />
-                                            </Left>
-                                            <Body>
-                                                <Text note numberOfLines={2}>Showcase : {item.Showcase}</Text>
-                                            </Body>
-                                        </ListItem>
+
                                         <ListItem thumbnail>
                                             <Left>
                                                 <Icon name="briefcase-account" size={30} color="blue" />
@@ -191,29 +168,14 @@ class EngineersProfile extends Component {
                                                 <Text note numberOfLines={2}>Description : {item.Description}</Text>
                                             </Body>
                                         </ListItem>
-                                        <ListItem thumbnail>
-                                            <Left>
-                                                <Icon1 name="dollar-bill" size={30} color="blue" />
-                                            </Left>
-                                            <Body>
-                                                <Text note numberOfLines={1}>Expected Salary : {item.expected_salary}</Text>
-                                            </Body>
-                                        </ListItem>
-                                        <ListItem thumbnail>
-                                            <Left>
-                                                <Icon1 name="social-skillshare" size={30} color="blue" />
-                                            </Left>
-                                            <Body>
-                                                <Text note numberOfLines={2}>Skill : {item.Skill}</Text>
-                                            </Body>
-                                        </ListItem>
+
                                     </List>
                                 </View>
                             </Card>
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                                 <Button primary onPress={() => {
-                                    this.props.navigation.push('EditEngineers', {
-                                        engineers: this.props.propsDetail.detailEngineers
+                                    this.props.navigation.push('EditCompanies', {
+                                        companies: this.props.propsDetail.detailCompanies
                                     })
                                 }} style={{ flex: 1 }} style={style.button}><Text style={style.textButton}> Edit </Text></Button>
                                 <Button onPress={this.delete} danger style={style.button}><Text style={style.textButton}> Delete </Text></Button>
@@ -227,14 +189,14 @@ class EngineersProfile extends Component {
     }
 }
 const mapStateToProps = state => ({
-    propsDetail: state.engineers
+    propsDetail: state.companies
 })
 
 const mapDispatchToProps = dispatch => ({
-    fetch: id => dispatch(fetchDetailEngineers(id)),
-    fetchDelete: id => dispatch(fetchDeleteEngineers(id))
+    fetch: id => dispatch(fetchDetailCompanies(id)),
+    fetchDelete: id => dispatch(fetchDeleteCompanies(id))
 })
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(EngineersProfile))
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(CompanyProfile))
 // export default withNavigation(Profile)
 const style = StyleSheet.create({
     profile: {

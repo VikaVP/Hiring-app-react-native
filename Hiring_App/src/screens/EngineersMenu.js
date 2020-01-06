@@ -12,7 +12,7 @@ import EngineersList from '../components/Engineers'
 import { connect } from 'react-redux'
 import { fetchEngineers, fetchDetailEngineers } from '../public/redux/actions/engineers'
 
-class Engineers extends React.Component {
+class EngineersMenu extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -171,17 +171,17 @@ class Engineers extends React.Component {
                 </ScrollView>
                 <View style={style.MenuBar}>
                     <TouchableOpacity style={{ flex: 1 }} onPress={() => {
-                        this.props.navigation.push('Engineers')
+                        this.props.navigation.push('Companies')
                     }}>
-                        <Menu iconName="home" title="Home" color="green" />
+                        <Menu iconName="home" title="Home" />
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flex: 1 }} onPress={() => {
-                        this.props.navigation.push('CompaniesMenu')
+                        this.props.navigation.push('EngineersMenu')
                     }}>
-                        <Menu iconName="account-badge" title="Company List" />
+                        <Menu iconName="account-badge" title="Engineers List" color="green" />
                     </TouchableOpacity >
                     <TouchableOpacity onPress={() => {
-                        this.props.navigation.push('MyProfile', {
+                        this.props.navigation.push('CompanyProfile', {
                             id: this.state.id
                         })
                     }} style={{ flex: 1 }}>
@@ -205,7 +205,7 @@ const mapDispatchToProps = dispatch => ({
     fetch: (search, page, limit, sort, sortBy) => dispatch(fetchEngineers(search, page, limit, sort, sortBy)),
     fetchDetail: id => dispatch(fetchDetailEngineers(id))
 })
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(Engineers))
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(EngineersMenu))
 
 
 // export default Engineers

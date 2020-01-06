@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, Image, Text, ScrollView, Header, TouchableOpacity, Alert } from 'react-native'
+import React from 'react'
+import { View, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import Menu from '../components/Menu'
 import jwtDecode from 'jwt-decode'
-import RNSecureStorage from 'rn-secure-storage'
+import RNSecureStorage, { ACCESSIBLE } from 'rn-secure-storage'
 import { withNavigation } from 'react-navigation'
-import EngineersDetail from '../components/EngineersDetail'
-class DetailEngineers extends React.Component {
+import EditCompany from '../components/EditCompanies'
+class EditCompanies extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -53,25 +53,25 @@ class DetailEngineers extends React.Component {
 
     }
     render() {
-        const engineers = this.props.navigation.getParam('engineers', {});
+        const companies = this.props.navigation.getParam('companies', {});
         return (
-            <View style={style.ListEngineers}>
+            <View style={style.ListCompanies}>
                 <ScrollView style={{ flex: 1, marginTop: -15 }}>
-                    <EngineersDetail prop={engineers} />
+                    <EditCompany prop={companies} />
                 </ScrollView>
                 <View style={style.MenuBar}>
                     <TouchableOpacity onPress={() => {
-                        this.props.navigation.push('Engineers')
+                        this.props.navigation.push('Companies')
                     }} style={{ flex: 1 }}>
                         <Menu iconName="home" title="Home" />
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flex: 1 }} onPress={() => {
-                        this.props.navigation.push('CompaniesMenu')
+                        this.props.navigation.push('EngineersMenu')
                     }}>
-                        <Menu iconName="account-badge" title="Company List" />
+                        <Menu iconName="account-badge" title="Engineers List" />
                     </TouchableOpacity >
                     <TouchableOpacity onPress={() => {
-                        this.props.navigation.push('MyProfile', {
+                        this.props.navigation.push('CompanyProfile', {
                             id: this.state.id
                         })
                     }} style={{ flex: 1 }} >
@@ -85,9 +85,9 @@ class DetailEngineers extends React.Component {
         )
     }
 }
-export default withNavigation(DetailEngineers)
+export default withNavigation(EditCompanies)
 const style = StyleSheet.create({
-    ListEngineers: {
+    ListCompanies: {
         flex: 1,
         backgroundColor: "#fff",
         paddingTop: 15

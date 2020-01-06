@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Image, Text } from 'react-native'
-import { TextInput, ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import { View, Text } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import { withNavigation } from 'react-navigation'
 import { CardFive } from 'react-native-card-ui'
 import { Bubbles } from 'react-native-loader'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-class Engineers extends Component {
+class Companies extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -15,7 +14,6 @@ class Engineers extends Component {
     }
     render() {
         const { isLoading } = this.state
-
         setTimeout(
             function () {
                 this.setState({ isLoading: true });
@@ -25,24 +23,24 @@ class Engineers extends Component {
         );
         return (
             <View style={{ alignItems: 'center' }} >
-                <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }} >LIST ENGINEERS</Text>
+                <Text style={{ fontSize: 20, textAlign: 'center', fontWeight: 'bold' }} >LIST COMPANIES</Text>
                 {!isLoading ? <Bubbles size={10} style={{ marginTop: 300 }} color="#FFF" /> :
-                    this.props.engineers.map((post, index) =>
+                    this.props.companies.map((post, index) =>
                         <TouchableOpacity key={index} onPress={() => {
-                            this.props.navigation.navigate('DetailEngineers', {
-                                engineers: post
+                            this.props.navigation.navigate('DetailCompanies', {
+                                companies: post
                             })
                         }}>
                             <CardFive
                                 title={post.Name}
                                 subTitle={
-                                    `Skill :${post.Skill}   Expected Salary: ${post.expected_salary}`
+                                    `Location :${post.Location}   Description: ${post.Description}`
                                 }
-                                profile={post.Photo ? {
-                                    uri: post.Photo
+                                profile={post.Logo ? {
+                                    uri: post.Logo
                                 } : { uri: `http://raivens.com/wp-content/uploads/2016/08/Dummy-image.jpg` }}
-                                image={post.Photo ? {
-                                    uri: post.Photo
+                                image={post.Logo ? {
+                                    uri: post.Logo
                                 } : { uri: `http://raivens.com/wp-content/uploads/2016/08/Dummy-image.jpg` }}
                                 icon={"star"}
                                 nbStar={6}
@@ -56,4 +54,4 @@ class Engineers extends Component {
     }
 }
 
-export default withNavigation(Engineers)
+export default withNavigation(Companies)
