@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Search from '../components/Search'
 import Menu from '../components/Menu'
 import Sliders from '../components/Sliders'
-import EngineersList from '../components/Engineers'
+import EngineersList from '../components/EngineersMenu'
 import { connect } from 'react-redux'
 import { fetchEngineers, fetchDetailEngineers } from '../public/redux/actions/engineers'
 

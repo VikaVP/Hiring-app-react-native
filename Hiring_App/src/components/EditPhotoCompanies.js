@@ -125,7 +125,7 @@ class EditPhotoCompanies extends Component {
                         this.props.navigation.push('CompanyProfile', {
                             id: this.state.id
                         })
-                        this.refresh
+                        this.refresh()
                     }
                 },
             ],
@@ -185,7 +185,9 @@ class EditPhotoCompanies extends Component {
                             <Form style={{ padding: 10 }} >
                                 <Label style={{ paddingTop: 20, textAlign: 'center', fontWeight: 'bold', fontSize: 20, marginBottom: 30, }}>EDIT NEW LOGO</Label>
                                 <TouchableOpacity onPress={this.UploadPhoto} style={{ marginTop: 20 }}>
-                                    <Image source={this.state.isSelectedPhoto ? this.state.Logo : this.state.Logo}
+                                    <Image source={this.state.isSelectedPhoto ? this.state.Logo :
+                                        this.state.Logo === '' ?
+                                            { uri: 'https://http://raivens.com/wp-content/uploads/2016/08/Dummy-image.jpg' } : { uri: this.state.Logo }}
                                         style={style.image} >
                                     </Image>
                                     <View style={{

@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Search from '../components/Search'
 import Menu from '../components/Menu'
 import Sliders from '../components/Sliders'
-import CompaniesList from '../components/Companies'
+import CompaniesList from '../components/CompanyMenu'
 import { connect } from 'react-redux'
 import { fetchCompanies, fetchDetailCompanies } from '../public/redux/actions/companies'
 
@@ -156,7 +156,7 @@ class CompaniesMenu extends React.Component {
                         <Menu iconName="account-badge" title="Companies List" color="green" />
                     </TouchableOpacity >
                     <TouchableOpacity onPress={() => {
-                        this.props.navigation.push('Profile', {
+                        this.props.navigation.push('MyProfile', {
                             id: this.state.id
                         })
                     }} style={{ flex: 1 }}>

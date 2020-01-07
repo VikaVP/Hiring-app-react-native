@@ -19,6 +19,8 @@ import CompanyProfile from './src/screens/CompanyProfile'
 import DetailCompanies from './src/screens/DetailCompanies'
 import EditCompanies from './src/screens/EditCompanies'
 import EditPhotoCompanies from './src/screens/EditPhotoCompanies'
+import DetailEngineersOfCompany from './src/screens/DetailEngineersOfCompany'
+import DetailCompanyOfEngineers from './src/screens/DetailCompanyOfEngineers'
 import { Provider } from 'react-redux'
 import store from './src/public/redux/store'
 const AppNavigator = createStackNavigator(
@@ -78,6 +80,15 @@ const AppNavigator = createStackNavigator(
     {
       screen: EngineersMenu
     },
+    DetailEngineersOfCompany:
+    {
+      screen: DetailEngineersOfCompany
+    },
+    DetailCompanyOfEngineers:
+    {
+      screen: DetailCompanyOfEngineers
+    }
+
   },
 
   {
@@ -87,24 +98,7 @@ const AppNavigator = createStackNavigator(
     }
   }
 );
-// const SwitchNavigator = createSwitchNavigator(
-//   {
-//     Home: {
-//       screen: Splash,
-//     },
-//     Main: {
-//       screen: Login,
-//     },
-//   },
-//   {
-//     initialRouteName: 'Main'
-//   },
-//   {
-//     headerMode: 'none',
-//     navigationOptions: {
-//       headerVisible: 'false'
-//     }
-//   });
+
 AppContainer = createAppContainer(AppNavigator);
 function Root() {
   return (

@@ -5,7 +5,7 @@ import jwtDecode from 'jwt-decode'
 import RNSecureStorage from 'rn-secure-storage'
 import { withNavigation } from 'react-navigation'
 import EngineersDetail from '../components/EngineersDetail'
-class DetailEngineers extends React.Component {
+class DetailEngineersOfCompany extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -61,17 +61,17 @@ class DetailEngineers extends React.Component {
                 </ScrollView>
                 <View style={style.MenuBar}>
                     <TouchableOpacity onPress={() => {
-                        this.props.navigation.push('Engineers')
+                        this.props.navigation.push('Companies')
                     }} style={{ flex: 1 }}>
                         <Menu iconName="home" title="Home" />
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flex: 1 }} onPress={() => {
-                        this.props.navigation.push('CompaniesMenu')
+                        this.props.navigation.push('EngineersMenu')
                     }}>
-                        <Menu iconName="account-badge" title="Company List" />
+                        <Menu iconName="account-badge" title="Engineers List" />
                     </TouchableOpacity >
                     <TouchableOpacity onPress={() => {
-                        this.props.navigation.push('MyProfile', {
+                        this.props.navigation.push('CompanyProfile', {
                             id: this.state.id
                         })
                     }} style={{ flex: 1 }} >
@@ -85,7 +85,7 @@ class DetailEngineers extends React.Component {
         )
     }
 }
-export default withNavigation(DetailEngineers)
+export default withNavigation(DetailEngineersOfCompany)
 const style = StyleSheet.create({
     ListEngineers: {
         flex: 1,
