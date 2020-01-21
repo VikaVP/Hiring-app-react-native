@@ -88,28 +88,28 @@ See the [open issues](https://github.com/VikaVP/Hiring-app-react-native/issues) 
 
 <p align='center'>
   <span>
-      <image width="200" src='./screenshoot/splash.png' />
-      <image width="200" src='./screenshoot/signin.png' />
-      <image width="200" src='./screenshoot/signup.png' />
+      <image width="200" src='../screenshoot/splash.png' />
+      <image width="200" src='../screenshoot/signin.png' />
+      <image width="200" src='../screenshoot/signup.png' />
      
       
   </span>
 </p>
 <p align='center'>
   <span>
-      <image width="200" src='./screenshoot/list.png' />
-        <image width="200" src='./screenshoot/engineers.png' />
-      <image width="200" src='./screenshoot/companies.png' />
-<image width="200" src='./screenshoot/profile.png' />
+      <image width="200" src='../screenshoot/list.png' />
+        <image width="200" src='../screenshoot/engineers.png' />
+      <image width="200" src='../screenshoot/companies.png' />
+<image width="200" src='../screenshoot/profile.png' />
       
   </span>
 </p>
 
 <p align='center'>
   <span>
-      <image width="200" src='./screenshoot/edit.png' />
-        <image width="200" src='./screenshoot/delete.png' />
-<image width="200" src='./screenshoot/detail.png' />
+      <image width="200" src='../screenshoot/edit.png' />
+        <image width="200" src='../screenshoot/delete.png' />
+<image width="200" src='../screenshoot/detail.png' />
       
   </span>
 </p>

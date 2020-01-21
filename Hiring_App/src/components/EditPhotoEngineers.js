@@ -67,8 +67,8 @@ class EditPhotoEngineers extends Component {
                 expected_salary: item.expected_salary,
                 Location: item.Location,
                 Date_created: item.Date_created.split('T')[0],
-                Photo: item.Photo == '' ?
-                    { uri: `http://raivens.com/wp-content/uploads/2016/08/Dummy-image.jpg` } :
+                Photo: item.Photo == null ?
+                    `http://raivens.com/wp-content/uploads/2016/08/Dummy-image.jpg`:
                     item.Photo
             })
         })
@@ -167,7 +167,7 @@ class EditPhotoEngineers extends Component {
         };
         ImagePicker.showImagePicker(options, (response) => {
             console.log('Response = ', response);
-            if (response.fileSize > 204800) {
+            if (response.fileSize > 2048000) {
                 this.setState({
                     photoErr: 'File too large max 2 MB'
                 })
