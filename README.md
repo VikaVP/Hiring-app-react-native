@@ -58,6 +58,10 @@ This project is a project for the frontend developer side for the hiring channel
 
 ## Getting Started
 
+Before you clone this repo, please visit backend repository for this project by click :
+
+[Hiring Channel Backend](https://github.com/VikaVP/hiring_Channel_app)
+
 To run Hiring Channel App, follow these steps:
 
 ```
