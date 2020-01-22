@@ -79,7 +79,7 @@ To run Hiring Channel App, follow these steps:
 
 This is an example of how to list things you need to use the software and how to install them.
 
-- npm
+- Node Js
 
 ```sh
 npm install npm@latest -g
