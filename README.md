@@ -43,7 +43,7 @@
 
 ## About The Project
 
-This project is a project for the frontend developer side for the hiring channel website that was previously created by the backend and database side.
+Hiring channel app project is a mobile app where the target users are engineers or developers who are looking for work so they can create an account and branding there to get the attention of companies that need new developers. And companies can register to become recruiters to look at the list of developers who fit the company's needs.
 
 ### Built With
 
@@ -107,7 +107,6 @@ See the [open issues](https://github.com/VikaVP/Hiring-app-react-native/issues) 
 
 <p align='center'>
   <span>
-      <image width="200" src='./screenshoot/splash.png' />
       <image width="200" src='./screenshoot/signin.png' />
       <image width="200" src='./screenshoot/signup.png' />
      
@@ -116,19 +115,9 @@ See the [open issues](https://github.com/VikaVP/Hiring-app-react-native/issues) 
 </p>
 <p align='center'>
   <span>
-      <image width="200" src='./screenshoot/list.png' />
         <image width="200" src='./screenshoot/engineers.png' />
       <image width="200" src='./screenshoot/companies.png' />
 <image width="200" src='./screenshoot/profile.png' />
-      
-  </span>
-</p>
-
-<p align='center'>
-  <span>
-      <image width="200" src='./screenshoot/edit.png' />
-        <image width="200" src='./screenshoot/delete.png' />
-<image width="200" src='./screenshoot/detail.png' />
       
   </span>
 </p>
