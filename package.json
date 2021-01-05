@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "^2.1.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "date-and-time": "^0.11.1",
     "email-regex": "^4.0.0",
     "expo-secure-store": "^8.0.0",
