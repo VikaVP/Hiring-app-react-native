@@ -34,7 +34,7 @@
     "react-native-imagepicker": "^2.0.0",
     "react-native-loader": "^1.2.1",
     "react-native-modal": "^11.5.3",
-    "react-native-reanimated": "^1.4.0",
+    "react-native-reanimated": "^2.10.0",
     "react-native-size-matters": "^0.3.0",
     "react-native-slideshow": "^1.0.1",
     "react-native-vector-icons": "^6.6.0",
